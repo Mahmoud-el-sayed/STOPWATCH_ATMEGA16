@@ -1,0 +1,23 @@
+/*
+ * project.c
+ *
+ *  Created on: Sep 18, 2021
+ *      Author: Mahmoud
+ */
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
+unsigned char tick = 0;
+
+
+int main(void)
+{
+	SREG  |= (1<<7); //enable global interrupt
+
+	while (1)
+	{
+
+	}
+}
+
+

@@ -1,0 +1,71 @@
+/*
+ * project.c
+ *
+ *  Created on: Sep 18, 2021
+ *      Author: Mahmoud
+ */
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
+#define SIZE 6
+unsigned char num[SIZE] ={0,0,0,0,0,0};
+unsigned char LOOP;
+ISR(TIMER1_COMPA_vect)
+{
+	num[0]++;
+	for (LOOP=0;LOOP<SIZE;LOOP++)
+	{
+		if (num[LOOP]==9)
+		{
+			num[LOOP]=0;
+			num[LOOP+1]++;
+		}
+	}
+	if (num[0]>9)
+	{
+		num[0]=0;
+		num[1]++;
+	}
+	if (num[1]==9)
+	{
+		num[1]=0;
+		num[2]++;
+	}
+	if (num[2]==9)
+	{
+		num[2]=0;
+		num[3]++;
+	}
+	if (num[3]==9)
+	{
+		num[3]=0;
+		num[4]++;
+	}
+	if (num[4]==9)
+	{
+		num[4]=0;
+		num[5]++;
+	}
+
+}
+void Timer1_init_CTC_Mode(void)
+{
+	TCNT1 = 0; //intial value =0
+	TCCR1A|=1<<FOC1A; //non pwm mode
+	TCCR1B |= (1<<WGM12) | (1<<CS10)|(1<<CS12); //CTC MODE  (clkI/O/1024 (From prescaler))
+	OCR1A = 65535; //top value
+	TIMSK|=(1<<OCIE1A); //Output Compare A Match Interrupt Enable
+
+}
+int main(void)
+{
+	SREG  |= (1<<7); //enable global interrupt
+	Timer1_init_CTC_Mode(); // Start the timer
+
+	while (1)
+	{
+
+	}
+}
+
+
